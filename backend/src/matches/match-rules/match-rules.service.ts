@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PetFeatures } from '../pet-features.interface';
 
 @Injectable()
@@ -34,6 +34,14 @@ export class MatchRulesService {
     }
 
     return { similarityPercentage, matchingFeatures };
+  }
+
+  ensureCanChangeStatus(status: string): void {
+    if (status !== 'pendiente') {
+      throw new ConflictException(
+        'Only pending matches can be confirmed or discarded',
+      );
+    }
   }
 
   private isSame(first: string, second: string): boolean {

@@ -4,7 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
+ feature/auth
 import { AuthModule } from './auth/auth.module';
+
+import { MatchesModule } from './matches/matches.module';
+develop
 
 @Module({
   imports: [
@@ -28,6 +32,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     AuthModule,
     ReportsModule,
+    MatchesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
