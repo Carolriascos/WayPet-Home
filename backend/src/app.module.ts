@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
 import { AuthModule } from './auth/auth.module';
-
 import { MatchesModule } from './matches/matches.module';
 
 @Module({
