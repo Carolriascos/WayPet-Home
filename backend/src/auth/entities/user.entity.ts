@@ -9,7 +9,7 @@ import { ReportEntity } from 'src/reports/entities/report.entity';
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryGeneratedColumn()     
+  @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ length: 100 })
