@@ -6,8 +6,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateMatchStatusDto } from './dto/update-match-status.dto';
 import { MatchesService } from './matches.service';
 
@@ -18,6 +20,7 @@ const requestValidationPipe = new ValidationPipe({
 });
 
 @Controller('matches')
+@UseGuards(JwtAuthGuard)
 export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
 
