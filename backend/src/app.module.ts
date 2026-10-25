@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ReportsModule } from './reports/reports.module';
         ssl: configService.get<string>('NODE_ENV') === 'production',
       }),
     }),
+    AuthModule,
     ReportsModule,
   ],
   controllers: [AppController],
