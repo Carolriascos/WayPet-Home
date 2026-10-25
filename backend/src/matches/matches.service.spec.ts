@@ -7,6 +7,7 @@ import {
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import type { AuthUser } from '../auth/interfaces/auth-user.interface';
+import { NotificationsService } from '../notifications/notifications.service';
 import { ReportEntity } from '../reports/entities/report.entity';
 import { MatchEntity } from './entities/match.entity';
 import { MatchRulesService } from './match-rules/match-rules.service';
@@ -28,6 +29,10 @@ describe('MatchesServiceTest', () => {
     findOne: jest.fn<(options: any) => Promise<ReportEntity | null>>(),
     existsBy: jest.fn<(options: any) => Promise<boolean>>(),
     save: jest.fn(),
+  };
+
+  const notificationsServiceMock = {
+    createForMatch: jest.fn<(matchId: number) => Promise<void>>(),
   };
 
   const ownerUser: AuthUser = {
@@ -76,6 +81,7 @@ describe('MatchesServiceTest', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     reportsRepositoryMock.existsBy.mockResolvedValue(true);
+    notificationsServiceMock.createForMatch.mockResolvedValue(undefined);
 
     const moduleRef = await Test.createTestingModule({
       providers: [
@@ -91,6 +97,10 @@ describe('MatchesServiceTest', () => {
         {
           provide: MatchRulesService,
           useValue: matchRulesServiceMock,
+        },
+        {
+          provide: NotificationsService,
+          useValue: notificationsServiceMock,
         },
       ],
     }).compile();
@@ -165,6 +175,7 @@ describe('MatchesServiceTest', () => {
       foundReport: foundReportMock,
     });
     expect(matchesRepositoryMock.save).toHaveBeenCalledTimes(1);
+    expect(notificationsServiceMock.createForMatch).toHaveBeenCalledWith(10);
   });
 
   it('does not save a match when the similarity is below 50', async () => {
@@ -180,6 +191,7 @@ describe('MatchesServiceTest', () => {
 
     expect(result).toEqual([]);
     expect(matchesRepositoryMock.save).not.toHaveBeenCalled();
+    expect(notificationsServiceMock.createForMatch).not.toHaveBeenCalled();
   });
 
   it('does not repeat a match that already exists', async () => {

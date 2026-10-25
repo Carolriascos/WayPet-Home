@@ -11,7 +11,7 @@ import { ReportEntity } from '../reports/entities/report.entity';
 import { UpdateMatchStatusDto } from './dto/update-match-status.dto';
 import { MatchEntity } from './entities/match.entity';
 import { MatchRulesService } from './match-rules/match-rules.service';
-
+import { NotificationsService } from '../notifications/notifications.service';
 const MINIMUM_SIMILARITY = 50;
 
 @Injectable()
@@ -24,6 +24,7 @@ export class MatchesService {
     private readonly reportsRepository: Repository<ReportEntity>,
 
     private readonly matchRulesService: MatchRulesService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async generateForReport(
@@ -84,7 +85,9 @@ export class MatchesService {
         foundReport,
       });
 
-      newMatches.push(await this.matchesRepository.save(match));
+      const savedMatch = await this.matchesRepository.save(match);
+      await this.notificationsService.createForMatch(savedMatch.id);
+      newMatches.push(savedMatch);
     }
 
     return newMatches;
