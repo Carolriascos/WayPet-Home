@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ReportEntity } from 'src/reports/entities/report.entity';
+import { ReportEntity } from '../../reports/entities/report.entity';
 
 @Entity('users')
 export class UserEntity {
