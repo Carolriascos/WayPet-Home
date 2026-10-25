@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
 import { AuthModule } from './auth/auth.module';
 import { MatchesModule } from './matches/matches.module';
-
+import { NotificationsModule } from './notifications/notifications.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +30,7 @@ import { MatchesModule } from './matches/matches.module';
     AuthModule,
     ReportsModule,
     MatchesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
