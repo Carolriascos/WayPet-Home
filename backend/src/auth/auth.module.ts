@@ -24,8 +24,11 @@ import { JwtStrategy } from './strategies/jwt.strategy';
           throw new Error('JWT_SECRET must contain at least 64 characters');
         }
         return {
-          secret,
-          signOptions: { expiresIn: '15m', algorithm: 'HS256' },
+            secret,
+            signOptions: {
+            expiresIn: Number(configService.get('JWT_EXPIRES_IN') ?? 900),
+            algorithm: 'HS256',
+            },
         };
       },
     }),
