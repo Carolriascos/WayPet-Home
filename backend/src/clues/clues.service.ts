@@ -60,12 +60,23 @@ export class CluesService {
     return this.cluesRepository.save(clue);
   }
 
-  async findAll(): Promise<ClueEntity[]> {
-    return this.cluesRepository.find({
-      relations: { report: true, user: true },
-      order: { createdAt: 'DESC' },
-    });
-  }
+  
+async findAll(): Promise<ClueEntity[]> {
+  return this.cluesRepository.find({
+    relations: { report: true },
+    select: {
+      id: true,
+      description: true,
+      location: true,
+      sightedAt: true,
+      latitude: true,
+      longitude: true,
+      photoUrl: true,
+      createdAt: true,
+    },
+    order: { createdAt: 'DESC' },
+  });
+}
 
   async findOne(id: number): Promise<ClueEntity> {
     const clue = await this.cluesRepository.findOne({

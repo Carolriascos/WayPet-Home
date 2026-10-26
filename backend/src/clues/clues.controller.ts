@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 
 import { CluesService } from './clues.service';
+import { ClueEntity } from './entities/clue.entity';
 import { CreateClueDto, UpdateClueDto } from './dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -26,14 +27,26 @@ export class CluesController {
     private readonly cluesService: CluesService,
   ) {}
 
-  @Post()
-  @Roles('usuario', 'administrador')
-  create(
-    @Body() dto: CreateClueDto,
-    @CurrentUser() user: AuthUser,
-  ) {
-    return this.cluesService.create(dto, user);
-  }
+private toSafeResponse(clue: ClueEntity) {
+  const {
+    user: _user,
+    ...safeClue
+  } = clue;
+
+  return safeClue;
+}
+
+  
+@Post()
+@Roles('usuario', 'administrador')
+async create(
+  @Body() dto: CreateClueDto,
+  @CurrentUser() user: AuthUser,
+) {
+  const clue = await this.cluesService.create(dto, user);
+  return this.toSafeResponse(clue);
+}
+
 
   @Get()
   @Roles('usuario', 'administrador')
@@ -41,21 +54,25 @@ export class CluesController {
     return this.cluesService.findAll();
   }
 
-  @Get(':id')
-  @Roles('usuario', 'administrador')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.cluesService.findOne(id);
-  }
+  
+@Get(':id')
+@Roles('usuario', 'administrador')
+async findOne(@Param('id', ParseIntPipe) id: number) {
+  const clue = await this.cluesService.findOne(id);
+  return this.toSafeResponse(clue);
+}
 
-  @Patch(':id')
-  @Roles('usuario', 'administrador')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateClueDto,
-    @CurrentUser() user: AuthUser,
-  ) {
-    return this.cluesService.update(id, dto, user);
-  }
+@Patch(':id')
+@Roles('usuario', 'administrador')
+async update(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() dto: UpdateClueDto,
+  @CurrentUser() user: AuthUser,
+) {
+  const clue = await this.cluesService.update(id, dto, user);
+  return this.toSafeResponse(clue);
+}
+
 
   @Delete(':id')
   @Roles('usuario', 'administrador')
