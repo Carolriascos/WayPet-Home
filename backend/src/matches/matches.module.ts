@@ -5,9 +5,12 @@ import { MatchEntity } from './entities/match.entity';
 import { MatchRulesService } from './match-rules/match-rules.service';
 import { MatchesController } from './matches.controller';
 import { MatchesService } from './matches.service';
-
+import { NotificationsModule } from '../notifications/notifications.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([MatchEntity, ReportEntity])],
+  imports: [
+    TypeOrmModule.forFeature([MatchEntity, ReportEntity]),
+    NotificationsModule,
+  ],
   controllers: [MatchesController],
   providers: [MatchesService, MatchRulesService],
 })

@@ -1,15 +1,17 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import type { AuthUser } from '../auth/interfaces/auth-user.interface';
 import { ReportEntity } from '../reports/entities/report.entity';
 import { UpdateMatchStatusDto } from './dto/update-match-status.dto';
 import { MatchEntity } from './entities/match.entity';
 import { MatchRulesService } from './match-rules/match-rules.service';
-
+import { NotificationsService } from '../notifications/notifications.service';
 const MINIMUM_SIMILARITY = 50;
 
 @Injectable()
@@ -22,9 +24,13 @@ export class MatchesService {
     private readonly reportsRepository: Repository<ReportEntity>,
 
     private readonly matchRulesService: MatchRulesService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
-  async generateForReport(reportId: number): Promise<MatchEntity[]> {
+  async generateForReport(
+    reportId: number,
+    user: AuthUser,
+  ): Promise<MatchEntity[]> {
     const report = await this.reportsRepository.findOne({
       where: { id: reportId },
       relations: { pet: true },
@@ -33,6 +39,8 @@ export class MatchesService {
     if (!report) {
       throw new NotFoundException(`Report with id ${reportId} was not found`);
     }
+
+    await this.ensureCanUseReport(reportId, user);
 
     if (report.status !== 'activo') {
       throw new ConflictException('Only active reports can be compared');
@@ -77,14 +85,17 @@ export class MatchesService {
         foundReport,
       });
 
-      newMatches.push(await this.matchesRepository.save(match));
+      const savedMatch = await this.matchesRepository.save(match);
+      await this.notificationsService.createForMatch(savedMatch.id);
+      newMatches.push(savedMatch);
     }
 
     return newMatches;
   }
 
-  async findAll(): Promise<MatchEntity[]> {
+  async findAll(user: AuthUser): Promise<MatchEntity[]> {
     return this.matchesRepository.find({
+      where: this.visibleTo(user),
       relations: {
         lostReport: true,
         foundReport: true,
@@ -95,7 +106,9 @@ export class MatchesService {
     });
   }
 
-  async findByReport(reportId: number): Promise<MatchEntity[]> {
+  async findByReport(reportId: number, user: AuthUser): Promise<MatchEntity[]> {
+    await this.ensureCanUseReport(reportId, user);
+
     return this.matchesRepository.find({
       where: [
         { lostReport: { id: reportId } },
@@ -130,8 +143,24 @@ export class MatchesService {
   async updateStatus(
     id: number,
     updateMatchStatusDto: UpdateMatchStatusDto,
+    user: AuthUser,
   ): Promise<MatchEntity> {
     const match = await this.findOne(id);
+
+    // Solo quien perdió la mascota (o un administrador) confirma o descarta
+    if (user.role !== 'administrador') {
+      const isOwner = await this.matchesRepository.existsBy({
+        id,
+        lostReport: { user: { id: user.id } },
+      });
+
+      if (!isOwner) {
+        throw new ForbiddenException(
+          'Only the owner of the lost report can change the match status',
+        );
+      }
+    }
+
     this.matchRulesService.ensureCanChangeStatus(match.status);
 
     match.status = updateMatchStatusDto.status;
@@ -144,5 +173,37 @@ export class MatchesService {
     }
 
     return this.matchesRepository.save(match);
+  }
+
+  // El administrador ve todo; el usuario solo las coincidencias de sus reportes
+  private visibleTo(
+    user: AuthUser,
+  ): FindOptionsWhere<MatchEntity>[] | undefined {
+    if (user.role === 'administrador') {
+      return undefined;
+    }
+
+    return [
+      { lostReport: { user: { id: user.id } } },
+      { foundReport: { user: { id: user.id } } },
+    ];
+  }
+
+  private async ensureCanUseReport(
+    reportId: number,
+    user: AuthUser,
+  ): Promise<void> {
+    if (user.role === 'administrador') {
+      return;
+    }
+
+    const isOwner = await this.reportsRepository.existsBy({
+      id: reportId,
+      user: { id: user.id },
+    });
+
+    if (!isOwner) {
+      throw new ForbiddenException('You can only use your own reports');
+    }
   }
 }
