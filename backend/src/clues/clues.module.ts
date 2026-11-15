@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -10,13 +9,7 @@ import { CluesController } from './clues.controller';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      ClueEntity,
-      ReportEntity,
-      UserEntity,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([ClueEntity, ReportEntity, UserEntity])],
   controllers: [CluesController],
   providers: [CluesService, RolesGuard],
   exports: [CluesService],
