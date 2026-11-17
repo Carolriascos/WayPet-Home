@@ -97,8 +97,8 @@ export class MatchesService {
     return this.matchesRepository.find({
       where: this.visibleTo(user),
       relations: {
-        lostReport: true,
-        foundReport: true,
+        lostReport: { pet: true },
+        foundReport: { pet: true },
       },
       order: {
         similarityPercentage: 'DESC',
@@ -115,8 +115,8 @@ export class MatchesService {
         { foundReport: { id: reportId } },
       ],
       relations: {
-        lostReport: true,
-        foundReport: true,
+        lostReport: { pet: true },
+        foundReport: { pet: true },
       },
       order: {
         similarityPercentage: 'DESC',
@@ -128,13 +128,30 @@ export class MatchesService {
     const match = await this.matchesRepository.findOne({
       where: { id },
       relations: {
-        lostReport: true,
-        foundReport: true,
+        lostReport: { pet: true },
+        foundReport: { pet: true },
       },
     });
 
     if (!match) {
       throw new NotFoundException(`Match with id ${id} was not found`);
+    }
+
+    return match;
+  }
+
+  async findOneForUser(id: number, user: AuthUser): Promise<MatchEntity> {
+    const match = await this.findOne(id);
+
+    if (user.role !== 'administrador') {
+      const canSee = await this.matchesRepository.existsBy([
+        { id, lostReport: { user: { id: user.id } } },
+        { id, foundReport: { user: { id: user.id } } },
+      ]);
+
+      if (!canSee) {
+        throw new ForbiddenException('You can only see your own matches');
+      }
     }
 
     return match;
@@ -147,7 +164,6 @@ export class MatchesService {
   ): Promise<MatchEntity> {
     const match = await this.findOne(id);
 
-    // Solo quien perdió la mascota (o un administrador) confirma o descarta
     if (user.role !== 'administrador') {
       const isOwner = await this.matchesRepository.existsBy({
         id,
@@ -165,7 +181,6 @@ export class MatchesService {
 
     match.status = updateMatchStatusDto.status;
 
-    // Si la coincidencia se confirma, los dos reportes quedan resueltos
     if (match.status === 'confirmada') {
       match.lostReport.status = 'resuelto';
       match.foundReport.status = 'resuelto';
