@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #ffb942;
+  --color-accent: #8a5cd9;
+  --color-dark: #252525;
+  --color-success: #04b300;
+  --color-danger: #f01e1e;
+  --color-info: #004cd5;
+  --color-bg: #ffffff;
+  --color-surface: #f1f4f9;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: var(--color-bg); color: var(--color-dark); padding-bottom: 5rem; }
+a { color: var(--color-accent); }
+main { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+h1 { margin-top: 0; }
+
+.site-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1rem 1.5rem; background: var(--color-primary); }
+.site-header a { color: var(--color-dark); text-decoration: none; font-weight: 600; }
+.brand { font-size: 1.3rem; }
+.site-nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.btn-link { background: none; border: none; font: inherit; font-weight: 600; cursor: pointer; padding: 0; }
+.site-footer { background: #111; color: #fff; padding: 1.5rem; text-align: center; margin-top: 3rem; }
+
+button { font: inherit; padding: 0.6rem 1.2rem; border-radius: 999px; border: none; background: var(--color-accent); color: #fff; cursor: pointer; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0; }
+.stat { background: var(--color-dark); color: #fff; border-radius: 12px; padding: 1rem; }
+.stat strong { display: block; font-size: 1.8rem; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; list-style: none; padding: 0; }
+
+.form { display: grid; gap: 1rem; max-width: 640px; }
+.field { display: grid; gap: 0.3rem; }
+.field input, .field select, .field textarea { font: inherit; padding: 0.6rem; border: 1px solid #ccc; border-radius: 8px; background: var(--color-surface); }
+.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.bottom-nav { display: none; }
+@media (max-width: 768px) {
+  .site-nav { display: none; }
+  .two-cols { grid-template-columns: 1fr; }
+  .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #ddd; padding: 0.5rem; z-index: 10; }
+  .bottom-nav a { text-decoration: none; font-size: 0.8rem; color: var(--color-dark); }
+  .bottom-nav a[aria-current="page"] { color: var(--color-accent); font-weight: 700; }
+  .bottom-nav .bottom-nav-primary { background: var(--color-accent); color: #fff; border-radius: 50%; width: 48px; height: 48px; display: grid; place-items: center; font-size: 1.5rem; }
+}
