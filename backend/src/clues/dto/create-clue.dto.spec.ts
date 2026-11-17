@@ -1,4 +1,4 @@
-import 'reflect-metadata'; 
+import 'reflect-metadata';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { CreateClueDto } from './create-clue.dto';
@@ -30,8 +30,7 @@ describe('CreateClueDto', () => {
       reportId: -5,
     });
 
-    expect(errors.some((error) => error.property === 'reportId'))
-      .toBe(true);
+    expect(errors.some((error) => error.property === 'reportId')).toBe(true);
   });
 
   it('rechaza una descripción demasiado corta', async () => {
@@ -40,8 +39,7 @@ describe('CreateClueDto', () => {
       description: 'perro',
     });
 
-    expect(errors.some((error) => error.property === 'description'))
-      .toBe(true);
+    expect(errors.some((error) => error.property === 'description')).toBe(true);
   });
 
   it('rechaza una fecha inválida', async () => {
@@ -50,8 +48,7 @@ describe('CreateClueDto', () => {
       sightedAt: 'ayer',
     });
 
-    expect(errors.some((error) => error.property === 'sightedAt'))
-      .toBe(true);
+    expect(errors.some((error) => error.property === 'sightedAt')).toBe(true);
   });
 
   it('rechaza coordenadas fuera de rango', async () => {
@@ -61,10 +58,8 @@ describe('CreateClueDto', () => {
       longitude: -200,
     });
 
-    expect(errors.some((error) => error.property === 'latitude'))
-      .toBe(true);
+    expect(errors.some((error) => error.property === 'latitude')).toBe(true);
 
-    expect(errors.some((error) => error.property === 'longitude'))
-      .toBe(true);
+    expect(errors.some((error) => error.property === 'longitude')).toBe(true);
   });
 });

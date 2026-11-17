@@ -1,4 +1,3 @@
-
 import {
   ForbiddenException,
   Injectable,
@@ -26,10 +25,7 @@ export class CluesService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(
-    dto: CreateClueDto,
-    currentUser: AuthUser,
-  ): Promise<ClueEntity> {
+  async create(dto: CreateClueDto, currentUser: AuthUser): Promise<ClueEntity> {
     const report = await this.reportsRepository.findOne({
       where: { id: dto.reportId },
     });
@@ -60,23 +56,22 @@ export class CluesService {
     return this.cluesRepository.save(clue);
   }
 
-  
-async findAll(): Promise<ClueEntity[]> {
-  return this.cluesRepository.find({
-    relations: { report: true },
-    select: {
-      id: true,
-      description: true,
-      location: true,
-      sightedAt: true,
-      latitude: true,
-      longitude: true,
-      photoUrl: true,
-      createdAt: true,
-    },
-    order: { createdAt: 'DESC' },
-  });
-}
+  async findAll(): Promise<ClueEntity[]> {
+    return this.cluesRepository.find({
+      relations: { report: true },
+      select: {
+        id: true,
+        description: true,
+        location: true,
+        sightedAt: true,
+        latitude: true,
+        longitude: true,
+        photoUrl: true,
+        createdAt: true,
+      },
+      order: { createdAt: 'DESC' },
+    });
+  }
 
   async findOne(id: number): Promise<ClueEntity> {
     const clue = await this.cluesRepository.findOne({
@@ -91,10 +86,7 @@ async findAll(): Promise<ClueEntity[]> {
     return clue;
   }
 
-  private checkPermission(
-    clue: ClueEntity,
-    currentUser: AuthUser,
-  ): void {
+  private checkPermission(clue: ClueEntity, currentUser: AuthUser): void {
     const isOwner = clue.user.id === currentUser.id;
     const isAdmin = currentUser.role === 'administrador';
 
@@ -153,10 +145,7 @@ async findAll(): Promise<ClueEntity[]> {
     return this.cluesRepository.save(clue);
   }
 
-  async remove(
-    id: number,
-    currentUser: AuthUser,
-  ): Promise<void> {
+  async remove(id: number, currentUser: AuthUser): Promise<void> {
     const clue = await this.findOne(id);
 
     this.checkPermission(clue, currentUser);
