@@ -122,7 +122,7 @@ describe('MatchesServiceTest', () => {
     expect(result).toEqual(matchMock);
     expect(matchesRepositoryMock.findOne).toHaveBeenCalledWith({
       where: { id: 5 },
-      relations: { lostReport: true, foundReport: true },
+      relations: { lostReport: { pet: true }, foundReport: { pet: true } },
     });
   });
 
@@ -258,7 +258,6 @@ describe('MatchesServiceTest', () => {
     expect(result.status).toBe('descartada');
     expect(reportsRepositoryMock.save).not.toHaveBeenCalled();
   });
-  feature / reports;
 
   it('only returns the matches of the user reports', async () => {
     matchesRepositoryMock.find.mockResolvedValue([]);
@@ -339,5 +338,22 @@ describe('MatchesServiceTest', () => {
     expect(result.status).toBe('descartada');
     expect(matchesRepositoryMock.existsBy).not.toHaveBeenCalled();
   });
-  develop;
+
+  it('throws ForbiddenException when seeing a match of someone else', async () => {
+    matchesRepositoryMock.findOne.mockResolvedValue({ id: 5 } as MatchEntity);
+    matchesRepositoryMock.existsBy.mockResolvedValue(false);
+
+    await expect(service.findOneForUser(5, ownerUser)).rejects.toBeInstanceOf(
+      ForbiddenException,
+    );
+  });
+
+  it('lets an administrator see any match', async () => {
+    matchesRepositoryMock.findOne.mockResolvedValue({ id: 5 } as MatchEntity);
+
+    const result = await service.findOneForUser(5, adminUser);
+
+    expect(result.id).toBe(5);
+    expect(matchesRepositoryMock.existsBy).not.toHaveBeenCalled();
+  });
 });

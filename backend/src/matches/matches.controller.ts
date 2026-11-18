@@ -39,6 +39,14 @@ export class MatchesController {
     return this.matchesService.findByReport(reportId, user);
   }
 
+  @Get(':id')
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: AuthUser,
+  ) {
+    return this.matchesService.findOneForUser(id, user);
+  }
+
   @Post('report/:reportId')
   generateForReport(
     @Param('reportId', ParseIntPipe) reportId: number,
