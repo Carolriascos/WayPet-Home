@@ -1,0 +1,33 @@
+.muted { color: #666; font-size: 0.9rem; margin: 0.2rem 0; }
+.tag { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.8rem; color: #fff; }
+.tag-danger { background: var(--color-danger, #e02424); }
+.tag-success { background: var(--color-success, #12a150); }
+.tag-warning { background: #d99100; }
+.tag-neutral { background: #666; }
+
+.similarity-value { font-size: 1.6rem; font-weight: 700; color: var(--color-accent, #8a5ad8); margin: 0; }
+.similarity-track { height: 10px; background: #e4e4e4; border-radius: 999px; overflow: hidden; }
+.similarity-fill { height: 100%; background: var(--color-accent, #8a5ad8); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+.filter { padding: 0.4rem 1rem; border-radius: 999px; background: var(--color-dark, #2f2f2f); color: #fff; text-decoration: none; }
+.filter-active { background: var(--color-primary, #ffb83f); color: var(--color-dark, #2f2f2f); font-weight: 600; }
+
+.empty-state { padding: 1.5rem; text-align: center; background: var(--color-surface, #f5f5f5); border-radius: 12px; }
+.alert { padding: 0.8rem 1rem; border-radius: 8px; }
+.alert-error { background: #fde8e8; color: #9b1c1c; }
+.alert-info { background: #e6f6ec; color: #14532d; }
+
+.pet-card { background: #fff; border-radius: 16px; padding: 1rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); }
+.pet-card h3 { margin: 0.5rem 0 0; }
+.pet-card-photo { position: relative; height: 170px; border-radius: 12px; overflow: hidden; background: var(--color-surface, #f5f5f5); display: grid; place-items: center; font-size: 3rem; }
+.pet-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pet-card-photo .tag { position: absolute; top: 8px; left: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.5rem 0; }
+.chip { background: var(--color-accent, #8a5ad8); color: #fff; border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.8rem; }
+
+.match-list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.match-card { background: #fff; border-radius: 16px; padding: 1rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); display: grid; gap: 0.5rem; }
+.badge { display: inline-block; margin-left: 0.3rem; background: var(--color-danger, #e02424); color: #fff; border-radius: 999px; padding: 0 0.5rem; font-size: 0.8rem; }
+.refresh { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin: 1rem 0; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
