@@ -1,31 +1,46 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-const ITEMS = [
-  { href: "/", label: "Casos" },
-  { href: "/coincidencias", label: "Coincid." },
-  { href: "/reportar", label: "+", primary: true },
-  { href: "/avisos", label: "Avisos" },
-  { href: "/avistamientos", label: "Avist." },
-];
+type AppHeaderProps = {
+  user: { id: number; email: string; role: string } | null;
+  unreadCount?: number;
+};
 
-export default function BottomNav() {
-  const pathname = usePathname();
+async function logout() {
+  "use server";
+  (await cookies()).delete("waypet_token");
+  redirect("/login");
+}
 
+export default function AppHeader({ user, unreadCount = 0 }: AppHeaderProps) {
   return (
-    <nav className="bottom-nav" aria-label="Navegación móvil">
-      {ITEMS.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={item.primary ? "bottom-nav-primary" : undefined}
-          aria-current={pathname === item.href ? "page" : undefined}
-        >
-          {item.label}
-        </Link>
-      ))}
-    </nav>
+    <header className="site-header">
+      <Link href="/" className="brand">WayPet Home</Link>
+      {user ? (
+        <>
+          <nav className="site-nav" aria-label="Navegación principal">
+            <Link href="/">Casos</Link>
+            <Link href="/reportar">Reportar</Link>
+            <Link href="/coincidencias">Coincidencias</Link>
+            <Link href="/avistamientos">Avistamientos</Link>
+            <Link href="/avisos">
+              Avisos
+              {unreadCount > 0 && (
+                <span className="badge" aria-label={`${unreadCount} avisos sin leer`}>
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </Link>
+            {user.role === "administrador" && <Link href="/admin">Admin</Link>}
+          </nav>
+          <form action={logout}>
+            <button type="submit" className="btn-link">Salir</button>
+          </form>
+        </>
+      ) : (
+        <Link href="/login">Iniciar sesión</Link>
+      )}
+    </header>
   );
 }
