@@ -5,6 +5,7 @@ import AppHeader from "@/components/app-header/app-header";
 import AppFooter from "@/components/app-footer/app-footer";
 import BottomNav from "@/components/bottom-nav/bottom-nav";
 import { getCurrentUser } from "@/lib/waypet-api";
+import { getUnreadCount } from "@/lib/unread-count";
 import "./globals.css";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
@@ -16,14 +17,15 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentUser();
+  const unreadCount = user ? await getUnreadCount() : 0;
 
   return (
     <html lang="es">
       <body className={poppins.className}>
-        <AppHeader user={user} />
+        <AppHeader user={user} unreadCount={unreadCount} />
         {children}
         <AppFooter />
-        {user && <BottomNav />}
+        {user && <BottomNav unreadCount={unreadCount} />}
       </body>
     </html>
   );
