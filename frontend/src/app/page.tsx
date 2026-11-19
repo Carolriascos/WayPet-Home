@@ -1,14 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
-import {
-  AlertMessage,
-  EmptyState,
-  FilterLinks,
-  PetCard,
-  StatusTag,
-} from "@/components/ui/ui";
+import { AlertMessage, EmptyState } from "@/components/ui/ui";
+import CaseCard from "@/components/case-card/case-card";
 import { apiFetch } from "@/lib/waypet-api";
-import { formatDate } from "@/lib/report-options";
 import type { Report } from "@/types/report";
+import styles from "./page.module.css";
 
 const NOTICES: Record<string, { text: string; tone: "error" | "info" }> = {
   noexiste: { text: "El caso que buscabas no existe.", tone: "error" },
@@ -31,66 +27,125 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
   const visible = reports && selected ? reports.filter((r) => r.type === selected) : reports;
   const message = notice ? NOTICES[notice] : undefined;
 
+  const filters = [
+    { label: "Todas", href: "/", active: !selected },
+    { label: "Perdidas", href: "/?tipo=perdida", active: selected === "perdida" },
+    { label: "Encontradas", href: "/?tipo=encontrada", active: selected === "encontrada" },
+  ];
+
   return (
-    <main>
-      <h1>Casos</h1>
-      <p className="muted">
-        Reportes de mascotas perdidas y encontradas. Si ves a alguna, abre el caso.
-      </p>
-      {message && <AlertMessage message={message.text} tone={message.tone} />}
+    <main className={styles.page}>
+      <section className={styles.hero}>
+        <div className={styles.heroText}>
+          <h1>
+            Conectamos pistas,
+            <br />
+            acercamos hogares.
+          </h1>
+          <p>
+            Reporta, encuentra coincidencias y sigue cada avistamiento de tu mascota en un
+            solo lugar
+          </p>
+          <span className={styles.pill}>Más de 1.200 familias reunidas</span>
+        </div>
+
+        <Image
+          src="/images/feed/hero.png"
+          alt="Un perro y un gato juntos, mirando a la cámara"
+          width={647}
+          height={403}
+          className={styles.heroImage}
+          priority
+        />
+      </section>
 
       {reports && (
-        <section className="stats" aria-label="Resumen de casos">
-          <div className="stat">
-            <strong>{active}</strong>Casos activos
+        <section className={styles.stats} aria-label="Resumen de casos">
+          <div className={styles.stat}>
+            <strong>{active}</strong>
+            <span>Casos activos</span>
           </div>
-          <div className="stat">
-            <strong>{resolved}</strong>Casos resueltos
+          <div className={styles.stat}>
+            <strong>{resolved}</strong>
+            <span>Casos resueltos</span>
           </div>
-          <div className="stat">
-            <strong>{reports.length}</strong>Total de casos
+          <div className={styles.stat}>
+            <strong>{reports.length}</strong>
+            <span>Total de casos</span>
           </div>
         </section>
       )}
 
-      <FilterLinks
-        label="Filtrar casos por tipo"
-        options={[
-          { label: "Todas", href: "/", active: !selected },
-          { label: "Perdidas", href: "/?tipo=perdida", active: selected === "perdida" },
-          { label: "Encontradas", href: "/?tipo=encontrada", active: selected === "encontrada" },
-        ]}
-      />
+      <section className={styles.recent} aria-labelledby="recent-title">
+        <div className={styles.recentHead}>
+          <div>
+            <h2 id="recent-title">Casos recientes</h2>
+            <p>Mascotas perdidas y encontradas cerca de ti.</p>
+          </div>
 
-      {visible === null && (
-        <AlertMessage message="No se pudieron consultar los casos. Intenta de nuevo más tarde." />
-      )}
-      {visible?.length === 0 && (
-        <EmptyState
-          message={
-            selected
-              ? "No hay casos de este tipo por ahora."
-              : "Todavía no hay casos reportados."
-          }
+          <nav className={styles.filters} aria-label="Filtrar casos por tipo">
+            {filters.map((filter) => (
+              <Link
+                key={filter.href}
+                href={filter.href}
+                aria-current={filter.active ? "page" : undefined}
+                className={filter.active ? `${styles.filter} ${styles.filterActive}` : styles.filter}
+              >
+                {filter.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {message && <AlertMessage message={message.text} tone={message.tone} />}
+        {visible === null && (
+          <AlertMessage message="No se pudieron consultar los casos. Intenta de nuevo más tarde." />
+        )}
+        {visible?.length === 0 && (
+          <EmptyState
+            message={
+              selected
+                ? "No hay casos de este tipo por ahora."
+                : "Todavía no hay casos reportados."
+            }
+          />
+        )}
+
+        {visible && visible.length > 0 && (
+          <ul className={styles.grid}>
+            {visible.map((report) => (
+              <li key={report.id}>
+                <CaseCard report={report} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className={styles.banner} aria-labelledby="banner-title">
+        <div className={styles.bannerText}>
+          <h2 id="banner-title">
+            Coincidencias que te
+            <br />
+            acercan a casa
+          </h2>
+          <p>
+            Comparamos especie, color, zona y fecha entre reportes activos y te avisamos cuando
+            algo encaja.{" "}
+            <Link href="/reportar" className={styles.bannerButton}>
+              Crear reportes
+            </Link>
+          </p>
+        </div>
+
+        <Image
+          src="/images/feed/banner-dogs.png"
+          alt="Grupo de cachorros de distintas razas"
+          width={879}
+          height={286}
+          className={styles.bannerImage}
         />
-      )}
-      {visible && visible.length > 0 && (
-        <ul className="cards-grid">
-          {visible.map((report) => (
-            <li key={report.id}>
-              <PetCard report={report}>
-                <p className="muted">{formatDate(report.eventDate)}</p>
-                {report.status === "resuelto" && (
-                  <StatusTag label="Resuelto" tone="neutral" />
-                )}
-                <p>
-                  <Link href={`/casos/${report.id}`}>Ver caso</Link>
-                </p>
-              </PetCard>
-            </li>
-          ))}
-        </ul>
-      )}
+      </section>
     </main>
   );
 }
