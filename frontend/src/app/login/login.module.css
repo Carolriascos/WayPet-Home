@@ -1,122 +1,127 @@
 
 .page {
-  --u: calc(100vw / 1728);
-  --yellow: #ffb942;
-  --ink: #1a1a1a;
-
-  /* anula el estilo global de <main> */
-  max-width: none;
-  margin: 0;
-  padding: 0;
-
-  position: relative;
-  display: grid;
-  grid-template-columns: calc(560 * var(--u)) 1fr;
   min-height: 100svh;
-  background: #fff;
-  color: var(--ink);
-  font-family: inherit;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: #fff9ed;
 }
 
-/* ---------- Panel amarillo ---------- */
+.card {
+  width: min(1120px, 100%);
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 18px 60px rgba(80, 57, 20, 0.12);
+}
 
 .visualPanel {
   position: relative;
-  z-index: 1;
-  background: var(--yellow);
-  /* la foto sobresale unos px hacia el lado blanco, como en el diseño */
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 42px;
+  overflow: hidden;
+  background: #ffbd43;
+  color: #29231b;
 }
 
 .brand {
-  position: absolute;
-  top: calc(24 * var(--u));
-  left: calc(68 * var(--u));
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: calc(10 * var(--u));
-  color: #fff;
-  font-size: calc(26 * var(--u));
+  position: relative;
+  z-index: 1;
+  color: #29231b;
+  font-size: 27px;
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: 0.02em;
   text-decoration: none;
 }
 
-.brandIcon {
-  width: calc(50 * var(--u));
-  height: calc(50 * var(--u));
-  fill: #fff;
+.brand span {
+  font-weight: 400;
 }
 
-.spiral {
-  position: absolute;
-  top: calc(165 * var(--u));
-  left: calc(54 * var(--u));
+.visualContent {
+  position: relative;
   z-index: 1;
-  width: calc(450 * var(--u));
-  height: auto;
-  pointer-events: none;
+  max-width: 390px;
+  margin: auto 0;
+  text-align: center;
 }
 
-.hero {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  width: calc(618 * var(--u));
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: left bottom;
-  pointer-events: none;
+.pawCircle {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 75px;
 }
 
-/* ---------- Formulario ---------- */
+.visualContent h2 {
+  margin-bottom: 14px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.visualContent p {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.visualFooter {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+}
 
 .formPanel {
-  display: flex;
-  align-items: center;
-  /* el bloque queda a 248px del borde del panel amarillo, como en el diseño */
-  padding: calc(60 * var(--u)) calc(60 * var(--u)) calc(60 * var(--u))
-    calc(248 * var(--u));
+  display: grid;
+  place-items: center;
+  padding: 55px;
 }
 
 .formContent {
   width: 100%;
-  max-width: calc(560 * var(--u));
+  max-width: 390px;
+}
+
+.eyebrow {
+  color: #b77b15;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .formContent h1 {
-  margin: 0 0 calc(38 * var(--u));
-  color: var(--ink);
-  font-size: calc(62 * var(--u));
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  margin: 14px 0 10px;
+  color: #29231b;
+  font-size: 36px;
+  font-weight: 700;
 }
 
 .subtitle {
-  max-width: calc(520 * var(--u));
-  margin: 0 0 calc(34 * var(--u));
-  color: var(--ink);
-  font-size: calc(21 * var(--u));
-  font-weight: 400;
-  line-height: calc(32 * var(--u));
+  margin-bottom: 35px;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .registerText {
-  margin: calc(37 * var(--u)) 0 0;
-  color: var(--ink);
-  font-size: calc(19 * var(--u));
+  margin-top: 26px;
+  color: #777;
+  font-size: 14px;
   text-align: center;
 }
 
 .registerText a {
-  margin-left: calc(10 * var(--u));
-  color: var(--yellow);
-  font-weight: 600;
+  color: #b77b15;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -125,87 +130,56 @@
 }
 
 .success {
-  margin: 0 0 calc(24 * var(--u));
-  padding: calc(14 * var(--u)) calc(20 * var(--u));
-  border-radius: calc(12 * var(--u));
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 10px;
   background: #e9f8e9;
   color: #216b29;
-  font-size: calc(15 * var(--u));
+  font-size: 13px;
   line-height: 1.5;
 }
 
-/* Clases del LoginForm (login-form.tsx) */
-
 :global(.auth-form) {
   display: grid;
-  gap: calc(32 * var(--u, 1px));
+  gap: 18px;
 }
 
 :global(.auth-field) {
   display: grid;
 }
 
-/* etiquetas solo para lectores de pantalla */
-:global(.auth-field > span) {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 :global(.auth-input) {
   width: 100%;
-  height: calc(76 * var(--u, 1px));
-  padding: 0 calc(22 * var(--u, 1px));
-  border: none;
-  border-radius: calc(22 * var(--u, 1px));
+  min-height: 54px;
+  padding: 0 17px;
+  border: 1px solid #e3e0d9;
+  border-radius: 12px;
   outline: none;
-  background: #efefef;
-  box-shadow: 0 calc(4 * var(--u, 1px)) calc(6 * var(--u, 1px))
-    rgba(0, 0, 0, 0.14);
-  color: var(--ink, #1a1a1a);
-  font-family: inherit;
-  font-size: calc(21 * var(--u, 1px));
-  font-weight: 400;
-  transition: box-shadow 0.2s, background 0.2s;
-}
-
-:global(.auth-input::placeholder) {
-  color: #555;
-  opacity: 1;
+  background: #faf9f6;
+  color: #29231b;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 :global(.auth-input:focus) {
-  background: #f5f5f5;
-  box-shadow: 0 0 0 3px rgba(255, 185, 66, 0.55),
-    0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: #ffbd43;
+  box-shadow: 0 0 0 3px rgba(255, 189, 67, 0.18);
 }
 
 :global(.auth-submit) {
-  width: 100%;
-  height: calc(76 * var(--u, 1px));
-  margin-top: calc(31 * var(--u, 1px));
-  padding: 0;
+  min-height: 54px;
+  margin-top: 8px;
   border: none;
-  border-radius: 999px;
-  background: #ffb942;
-  box-shadow: 0 calc(4 * var(--u, 1px)) calc(6 * var(--u, 1px))
-    rgba(0, 0, 0, 0.18);
-  color: #fff;
-  font-family: inherit;
-  font-size: calc(21 * var(--u, 1px));
-  font-weight: 500;
+  border-radius: 12px;
+  background: #ffbd43;
+  color: #29231b;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 :global(.auth-submit:hover) {
-  background: #f5a825;
+  background: #f3aa26;
 }
 
 :global(.auth-submit:disabled) {
@@ -215,17 +189,17 @@
 
 :global(.auth-error) {
   margin: 0;
-  padding: calc(12 * var(--u, 1px)) calc(18 * var(--u, 1px));
-  border-radius: calc(12 * var(--u, 1px));
+  padding: 12px;
+  border-radius: 10px;
   background: #fff0f0;
   color: #c62828;
-  font-size: calc(15 * var(--u, 1px));
+  font-size: 13px;
   line-height: 1.5;
 }
 
-/* Oculta header / footer / nav inferior en las pantallas de auth */
 :global(body:has(.auth-page)) {
   padding-bottom: 0;
+  background: #fff9ed;
 }
 
 :global(body:has(.auth-page) .site-header),
@@ -234,84 +208,69 @@
   display: none;
 }
 
-/* ---------- Móvil / tablet: panel arriba, formulario abajo ---------- */
-
-@media (max-width: 900px) {
+@media (max-width: 700px) {
   .page {
-    --u: 1px;
+    min-height: 100svh;
+    padding: 0;
+    background: #fff9ed;
+  }
+
+  .card {
+    min-height: 100svh;
     grid-template-columns: 1fr;
-    grid-template-rows: 220px 1fr;
+    grid-template-rows: 175px 1fr;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .visualPanel {
-    overflow: hidden;
+    padding: 22px 25px;
+    justify-content: center;
   }
 
   .brand {
-    top: 18px;
-    left: 24px;
-    font-size: 16px;
-  }
-
-  .brandIcon {
-    width: 34px;
-    height: 34px;
-  }
-
-  .spiral {
+    position: absolute;
     top: 20px;
-    left: auto;
-    right: -40px;
-    width: 220px;
-    opacity: 0.9;
+    left: 25px;
+    font-size: 22px;
   }
 
-  .hero {
-    left: 50%;
-    width: auto;
-    height: 190px;
-    transform: translateX(-50%);
+  .visualContent {
+    margin: 40px 0 0;
+    max-width: none;
+  }
+
+  .pawCircle {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 8px;
+    font-size: 32px;
+  }
+
+  .visualContent h2 {
+    margin: 5px 0;
+    font-size: 21px;
+  }
+
+  .visualContent p {
+    margin: 5px 0;
+    font-size: 12px;
+  }
+
+  .visualFooter {
+    display: none;
   }
 
   .formPanel {
-    align-items: flex-start;
-    padding: 32px 24px 48px;
-  }
-
-  .formContent {
-    max-width: 480px;
-    margin: 0 auto;
+    align-items: start;
+    padding: 38px 25px;
   }
 
   .formContent h1 {
-    margin-bottom: 14px;
-    font-size: 36px;
+    font-size: 29px;
   }
 
   .subtitle {
-    margin-bottom: 28px;
-    font-size: 15px;
-    line-height: 24px;
-  }
-
-  :global(.auth-form) {
-    gap: 18px;
-  }
-
-  :global(.auth-input),
-  :global(.auth-submit) {
-    height: 56px;
-    border-radius: 16px;
-    font-size: 15px;
-  }
-
-  :global(.auth-submit) {
-    margin-top: 12px;
-    border-radius: 999px;
-  }
-
-  .registerText {
-    margin-top: 24px;
-    font-size: 14px;
+    margin-bottom: 25px;
   }
 }
