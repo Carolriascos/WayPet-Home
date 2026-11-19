@@ -1,164 +1,207 @@
 
 .page {
-  min-height: 100svh;
+  --u: calc(100vw / 1728);
+  --yellow: #ffb942;
+  --ink: #1a1a1a;
+
+  /* anula el estilo global de <main> */
+  max-width: none;
+  margin: 0;
+  padding: 0;
+
+  position: relative;
   display: grid;
-  place-items: center;
-  padding: 32px;
-  background: #fff9ed;
+  grid-template-columns: calc(544 * var(--u)) 1fr;
+  min-height: 100svh;
+  background: #fff;
+  color: var(--ink);
+  font-family: inherit;
 }
 
-.card {
-  width: min(1120px, 100%);
-  min-height: 720px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 28px;
-  box-shadow: 0 18px 60px rgba(80, 57, 20, 0.12);
-}
+/* ---------- Panel amarillo ---------- */
 
 .visualPanel {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 42px;
-  background: #ffbd43;
-  color: #29231b;
+  position: relative;
+  z-index: 1;
+  background: var(--yellow);
+  overflow: visible; /* la foto sobresale hacia el lado blanco, como en el diseño */
 }
 
 .brand {
-  color: #29231b;
-  font-size: 27px;
-  font-weight: 700;
-  text-decoration: none;
+  position: absolute;
+  top: calc(14 * var(--u));
+  left: calc(75 * var(--u));
+  z-index: 3;
+  display: block;
+  line-height: 0;
 }
 
-.brand span {
-  font-weight: 400;
+.brand img {
+  width: calc(165 * var(--u));
+  height: auto;
 }
 
-.visualContent {
-  max-width: 390px;
-  margin: auto 0;
-  text-align: center;
+.arc {
+  position: absolute;
+  top: calc(330 * var(--u));
+  left: 0;
+  z-index: 1;
+  width: calc(544 * var(--u));
+  height: calc(360 * var(--u));
+  fill: none;
+  stroke: #eeb350;
+  stroke-width: 16;
+  stroke-linecap: round;
+  pointer-events: none;
 }
 
-.pawCircle {
-  display: grid;
-  place-items: center;
-  width: 130px;
-  height: 130px;
-  margin: 0 auto 25px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
-  font-size: 65px;
+.burst {
+  position: absolute;
+  top: calc(162 * var(--u));
+  left: calc(86 * var(--u));
+  z-index: 1;
+  width: calc(230 * var(--u));
+  height: auto;
+  pointer-events: none;
 }
 
-.visualContent h2 {
-  font-size: 33px;
-  line-height: 1.2;
+.hero {
+  position: absolute;
+  bottom: 0;
+  left: calc(45 * var(--u));
+  z-index: 2;
+  width: calc(655 * var(--u));
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
 }
 
-.visualContent p {
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.visualFooter {
-  margin: 0;
-  font-size: 13px;
-  text-align: center;
-}
+/* ---------- Formulario ---------- */
 
 .formPanel {
-  display: grid;
-  place-items: center;
-  padding: 42px 55px;
+  display: flex;
+  align-items: flex-start;
+  padding: calc(165 * var(--u)) calc(60 * var(--u)) calc(60 * var(--u))
+    calc(261 * var(--u));
 }
 
 .formContent {
   width: 100%;
-  max-width: 420px;
-}
-
-.eyebrow {
-  color: #b77b15;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  max-width: calc(546 * var(--u));
 }
 
 .formContent h1 {
-  margin: 10px 0;
-  color: #29231b;
-  font-size: 34px;
+  margin: 0 0 calc(30 * var(--u));
+  color: var(--ink);
+  font-size: calc(60 * var(--u));
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
 .subtitle {
-  margin-bottom: 22px;
-  color: #777;
-  font-size: 13px;
-  line-height: 1.6;
+  max-width: calc(486 * var(--u));
+  margin: 0 auto calc(35 * var(--u));
+  color: var(--ink);
+  font-size: calc(21 * var(--u));
+  font-weight: 400;
+  line-height: calc(32 * var(--u));
+  text-align: center;
 }
 
 .loginText {
-  margin-top: 20px;
-  color: #777;
-  font-size: 13px;
+  margin: calc(35 * var(--u)) 0 0;
+  color: var(--ink);
+  font-size: calc(19 * var(--u));
   text-align: center;
 }
 
 .loginText a {
-  color: #b77b15;
-  font-weight: 700;
+  margin-left: calc(10 * var(--u));
+  color: var(--yellow);
+  font-weight: 600;
   text-decoration: none;
 }
 
+.loginText a:hover {
+  text-decoration: underline;
+}
+
+
+
 :global(.register-form) {
   display: grid;
-  gap: 12px;
+  gap: calc(32 * var(--u, 1px));
 }
 
 :global(.register-field) {
   display: grid;
-  gap: 6px;
-  color: #39332a;
-  font-size: 12px;
-  font-weight: 600;
+}
+
+
+:global(.register-field > span) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 :global(.register-field input) {
   width: 100%;
-  min-height: 46px;
-  padding: 0 14px;
-  border: 1px solid #e3e0d9;
-  border-radius: 10px;
+  height: calc(75 * var(--u, 1px));
+  padding: 0 calc(20 * var(--u, 1px));
+  border: none;
+  border-radius: calc(20 * var(--u, 1px));
   outline: none;
-  background: #faf9f6;
-  color: #29231b;
-  font: inherit;
+  background: #efefef;
+  box-shadow: 0 calc(4 * var(--u, 1px)) calc(6 * var(--u, 1px))
+    rgba(0, 0, 0, 0.14);
+  color: #1a1a1a;
+  font-family: inherit;
+  font-size: calc(21 * var(--u, 1px));
   font-weight: 400;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+:global(.register-field input::placeholder) {
+  color: #555;
+  opacity: 1;
 }
 
 :global(.register-field input:focus) {
-  border-color: #ffbd43;
-  box-shadow: 0 0 0 3px rgba(255, 189, 67, 0.18);
+  background: #f5f5f5;
+  box-shadow: 0 0 0 3px rgba(255, 185, 66, 0.55),
+    0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 :global(.register-submit) {
-  min-height: 50px;
-  margin-top: 8px;
+  width: 100%;
+  height: calc(73 * var(--u, 1px));
+  margin-top: calc(22 * var(--u, 1px));
+  padding: 0;
   border: none;
-  border-radius: 11px;
-  background: #ffbd43;
-  color: #29231b;
-  font-weight: 700;
+  border-radius: 999px;
+  background: #ffb942;
+  box-shadow: 0 calc(4 * var(--u, 1px)) calc(6 * var(--u, 1px))
+    rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-family: inherit;
+  font-size: calc(21 * var(--u, 1px));
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 :global(.register-submit:hover) {
-  background: #f3aa26;
+  background: #f5a825;
 }
 
 :global(.register-submit:disabled) {
@@ -168,17 +211,17 @@
 
 :global(.register-error) {
   margin: 0;
-  padding: 11px;
-  border-radius: 9px;
+  padding: calc(12 * var(--u, 1px)) calc(18 * var(--u, 1px));
+  border-radius: calc(12 * var(--u, 1px));
   background: #fff0f0;
   color: #c62828;
-  font-size: 12px;
+  font-size: calc(15 * var(--u, 1px));
   line-height: 1.5;
 }
 
+
 :global(body:has(.auth-page)) {
   padding-bottom: 0;
-  background: #fff9ed;
 }
 
 :global(body:has(.auth-page) .site-header),
@@ -187,77 +230,85 @@
   display: none;
 }
 
-@media (max-width: 700px) {
-  .page {
-    min-height: 100svh;
-    padding: 0;
-  }
 
-  .card {
-    min-height: 100svh;
+
+@media (max-width: 900px) {
+  .page {
+    --u: 1px;
     grid-template-columns: 1fr;
-    grid-template-rows: 165px 1fr;
-    border-radius: 0;
-    box-shadow: none;
+    grid-template-rows: 220px 1fr;
   }
 
   .visualPanel {
-    position: relative;
-    padding: 20px 25px;
-    justify-content: center;
+    overflow: hidden;
   }
 
   .brand {
-    position: absolute;
-    top: 17px;
-    left: 25px;
-    font-size: 21px;
+    top: 16px;
+    left: 24px;
   }
 
-  .visualContent {
-    margin: 35px 0 0;
-    max-width: none;
+  .brand img {
+    width: 120px;
   }
 
-  .pawCircle {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 5px;
-    font-size: 27px;
-  }
-
-  .visualContent h2 {
-    margin: 5px 0;
-    font-size: 19px;
-  }
-
-  .visualContent p {
-    margin: 5px 0;
-    font-size: 11px;
-  }
-
-  .visualFooter {
+  .arc {
     display: none;
   }
 
+  .burst {
+    top: 40px;
+    left: auto;
+    right: 14px;
+    width: 110px;
+  }
+
+  .hero {
+    left: 50%;
+    width: auto;
+    height: 200px;
+    transform: translateX(-60%);
+  }
+
   .formPanel {
-    align-items: start;
-    padding: 25px 24px 35px;
+    align-items: flex-start;
+    padding: 32px 24px 48px;
+  }
+
+  .formContent {
+    max-width: 480px;
+    margin: 0 auto;
   }
 
   .formContent h1 {
-    font-size: 27px;
+    margin-bottom: 12px;
+    font-size: 36px;
   }
 
   .subtitle {
-    margin-bottom: 17px;
+    margin-bottom: 26px;
+    font-size: 15px;
+    line-height: 24px;
   }
 
   :global(.register-form) {
-    gap: 10px;
+    gap: 14px;
   }
 
-  :global(.register-field input) {
-    min-height: 43px;
+  :global(.register-field input),
+  :global(.register-submit) {
+    height: 54px;
+    border-radius: 16px;
+    font-size: 15px;
+  }
+
+  :global(.register-submit) {
+    margin-top: 10px;
+    border-radius: 999px;
+  }
+
+  .loginText {
+    margin-top: 22px;
+    font-size: 14px;
   }
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useActionState } from "react";
@@ -19,7 +18,7 @@ export default function RegisterForm() {
         <input
           type="text"
           name="name"
-          placeholder="Tu nombre"
+          placeholder="Nombre Completo"
           autoComplete="name"
           maxLength={100}
           required
@@ -31,7 +30,7 @@ export default function RegisterForm() {
         <input
           type="email"
           name="email"
-          placeholder="correo@ejemplo.com"
+          placeholder="Correo Electrónico"
           autoComplete="email"
           maxLength={200}
           required
@@ -43,7 +42,7 @@ export default function RegisterForm() {
         <input
           type="tel"
           name="phone"
-          placeholder="Tu número de teléfono"
+          placeholder="Teléfono"
           autoComplete="tel"
           maxLength={20}
           required
@@ -51,11 +50,11 @@ export default function RegisterForm() {
       </label>
 
       <label className="register-field">
-        <span>Contraseña</span>
+        <span>Crear contraseña (entre 8 y 15 caracteres)</span>
         <input
           type="password"
           name="password"
-          placeholder="Entre 8 y 15 caracteres"
+          placeholder="Crear Contraseña"
           autoComplete="new-password"
           minLength={8}
           maxLength={15}
@@ -70,7 +69,7 @@ export default function RegisterForm() {
         <input
           type="password"
           name="confirmPassword"
-          placeholder="Repite tu contraseña"
+          placeholder="Confirmar Contraseña"
           autoComplete="new-password"
           minLength={8}
           maxLength={15}
@@ -89,7 +88,7 @@ export default function RegisterForm() {
         className="register-submit"
         disabled={isPending}
       >
-        {isPending ? "Creando cuenta..." : "Crear cuenta"}
+        {isPending ? "Creando cuenta..." : "Crear Cuenta"}
       </button>
     </form>
   );
