@@ -1,8 +1,8 @@
-import { apiFetch } from "@/lib/waypet-api";
+import { apiFetchOptional } from "@/lib/waypet-api";
 import type { Notification } from "@/types/notification";
 
 export async function getUnreadCount(): Promise<number> {
-  const response = await apiFetch("/notifications");
+  const response = await apiFetchOptional("/notifications");
   if (!response?.ok) return 0;
 
   const data = await response.json().catch(() => null);
