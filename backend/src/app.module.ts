@@ -1,5 +1,6 @@
 import { CluesModule } from './clues/clues.module';
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -8,6 +9,7 @@ import { ReportsModule } from './reports/reports.module';
 import { AuthModule } from './auth/auth.module';
 import { MatchesModule } from './matches/matches.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +37,10 @@ import { NotificationsModule } from './notifications/notifications.module';
     NotificationsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Interceptor global: registra cada petición HTTP (ver logging.interceptor.ts)
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+  ],
 })
 export class AppModule {}
