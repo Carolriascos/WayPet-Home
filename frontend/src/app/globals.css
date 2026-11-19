@@ -34,6 +34,10 @@ button { font: inherit; padding: 0.6rem 1.2rem; border-radius: 999px; border: no
 .field input, .field select, .field textarea { font: inherit; padding: 0.6rem; border: 1px solid #ccc; border-radius: 8px; background: var(--color-surface); }
 .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #ddd; }
+th { font-weight: 600; }
+
 .bottom-nav { display: none; }
 @media (max-width: 768px) {
   .site-nav { display: none; }
