@@ -1,3 +1,4 @@
+
 import {
   ForbiddenException,
   Injectable,
@@ -25,7 +26,10 @@ export class CluesService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(dto: CreateClueDto, currentUser: AuthUser): Promise<ClueEntity> {
+  async create(
+    dto: CreateClueDto,
+    currentUser: AuthUser,
+  ): Promise<ClueEntity> {
     const report = await this.reportsRepository.findOne({
       where: { id: dto.reportId },
     });
@@ -56,37 +60,44 @@ export class CluesService {
     return this.cluesRepository.save(clue);
   }
 
-  async findAll(): Promise<ClueEntity[]> {
-    return this.cluesRepository.find({
-      relations: { report: true },
-      select: {
-        id: true,
-        description: true,
-        location: true,
-        sightedAt: true,
-        latitude: true,
-        longitude: true,
-        photoUrl: true,
-        createdAt: true,
+
+
+async findAll(): Promise<ClueEntity[]> {
+  return this.cluesRepository.find({
+    relations: {
+      report: {
+        pet: true,
       },
-      order: { createdAt: 'DESC' },
-    });
+    },
+    order: { createdAt: 'DESC' },
+  });
+}
+
+
+
+async findOne(id: number): Promise<ClueEntity> {
+  const clue = await this.cluesRepository.findOne({
+    where: { id },
+    relations: {
+      report: {
+        pet: true,
+      },
+      user: true,
+    },
+  });
+
+  if (!clue) {
+    throw new NotFoundException('Pista no encontrada');
   }
 
-  async findOne(id: number): Promise<ClueEntity> {
-    const clue = await this.cluesRepository.findOne({
-      where: { id },
-      relations: { report: true, user: true },
-    });
+  return clue;
+}
 
-    if (!clue) {
-      throw new NotFoundException('Pista no encontrada');
-    }
 
-    return clue;
-  }
-
-  private checkPermission(clue: ClueEntity, currentUser: AuthUser): void {
+  private checkPermission(
+    clue: ClueEntity,
+    currentUser: AuthUser,
+  ): void {
     const isOwner = clue.user.id === currentUser.id;
     const isAdmin = currentUser.role === 'administrador';
 
@@ -145,7 +156,10 @@ export class CluesService {
     return this.cluesRepository.save(clue);
   }
 
-  async remove(id: number, currentUser: AuthUser): Promise<void> {
+  async remove(
+    id: number,
+    currentUser: AuthUser,
+  ): Promise<void> {
     const clue = await this.findOne(id);
 
     this.checkPermission(clue, currentUser);
