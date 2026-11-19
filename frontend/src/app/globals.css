@@ -37,6 +37,9 @@ button { font: inherit; padding: 0.6rem 1.2rem; border-radius: 999px; border: no
 table { width: 100%; border-collapse: collapse; background: #fff; }
 th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #ddd; }
 th { font-weight: 600; }
+dl { margin: 0; }
+dt { font-weight: 600; margin-top: 0.6rem; }
+dd { margin: 0; }
 
 .bottom-nav { display: none; }
 @media (max-width: 768px) {

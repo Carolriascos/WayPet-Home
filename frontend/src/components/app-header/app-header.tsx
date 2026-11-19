@@ -22,6 +22,7 @@ export default function AppHeader({ user, unreadCount = 0 }: AppHeaderProps) {
           <nav className="site-nav" aria-label="Navegación principal">
             <Link href="/">Casos</Link>
             <Link href="/reportar">Reportar</Link>
+            <Link href="/mis-reportes">Mis reportes</Link>
             <Link href="/coincidencias">Coincidencias</Link>
             <Link href="/avistamientos">Avistamientos</Link>
             <Link href="/avisos">
