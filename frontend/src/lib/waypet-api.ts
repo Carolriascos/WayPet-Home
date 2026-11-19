@@ -68,6 +68,34 @@ export async function apiFetch(
   return response;
 }
 
+// 3b. Igual que apiFetch, pero devuelve null si el servidor no responde
+// (útil en acciones de servidor, donde un redirect no debe quedar dentro de un try/catch)
+export async function apiFetchSafe(
+  path: string,
+  options: RequestInit = {}
+): Promise<Response | null> {
+  const token = await requireToken();
+
+  let response: Response;
+  try {
+    const headers = new Headers(options.headers);
+    headers.set("Authorization", `Bearer ${token}`);
+    response = await fetch(getApiUrl(path), {
+      ...options,
+      headers,
+      cache: "no-store",
+    });
+  } catch {
+    return null;
+  }
+
+  if (response.status === 401) {
+    redirect("/login");
+  }
+
+  return response;
+}
+
 // 4. Petición opcional sin redirecciones (para el encabezado)
 export async function apiFetchOptional(
   path: string,

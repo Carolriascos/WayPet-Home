@@ -7,6 +7,7 @@ const ITEMS = [
   { href: "/", label: "Casos" },
   { href: "/coincidencias", label: "Coincid." },
   { href: "/reportar", label: "+", primary: true },
+  { href: "/mis-reportes", label: "Mis rep." },
   { href: "/avisos", label: "Avisos" },
   { href: "/avistamientos", label: "Avist." },
 ];
