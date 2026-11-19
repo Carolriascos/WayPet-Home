@@ -1,4 +1,4 @@
-
+import Image from "next/image";
 import Link from "next/link";
 import RegisterForm from "./register-form";
 import styles from "./register.module.css";
@@ -6,48 +6,60 @@ import styles from "./register.module.css";
 export default function RegisterPage() {
   return (
     <main className={`auth-page ${styles.page}`}>
-      <section className={styles.card}>
-        <aside className={styles.visualPanel}>
-          <Link href="/" className={styles.brand}>
-            WayPet <span>Home</span>
-          </Link>
+      <aside className={styles.visualPanel}>
+        <Link href="/" className={styles.brand} aria-label="WayPet Home">
+          <Image
+            src="/images/auth/logo.png"
+            alt="WayPet Home"
+            width={165}
+            height={42}
+            priority
+          />
+        </Link>
 
-          <div className={styles.visualContent}>
-            <div className={styles.pawCircle} aria-hidden="true">
-              🐾
-            </div>
+        {/* arco decorativo, tono apenas más oscuro que el fondo */}
+        <svg
+          className={styles.arc}
+          viewBox="0 0 544 360"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+        >
+          <path d="M -10 120 C 110 175 300 170 350 20" />
+        </svg>
 
-            <h2>¡Únete a nuestra comunidad!</h2>
+        <Image
+          src="/images/auth/burst.png"
+          alt=""
+          width={230}
+          height={219}
+          className={styles.burst}
+          priority
+        />
 
-            <p>
-              Ayúdanos a conectar mascotas con sus familias.
-              Cada registro es una oportunidad para un reencuentro.
-            </p>
-          </div>
+        <Image
+          src="/images/auth/man-dog.png"
+          alt="Hombre sonriendo mientras abraza a un cachorro golden retriever"
+          width={655}
+          height={921}
+          className={styles.hero}
+          priority
+        />
+      </aside>
 
-          <p className={styles.visualFooter}>
-            Porque ningún peludito debería estar lejos de casa.
+      <section className={styles.formPanel}>
+        <div className={styles.formContent}>
+          <h1>Registrarse</h1>
+
+          <p className={styles.subtitle}>
+            Por favor, introduce tus datos para registrarse y crear una cuenta.
           </p>
-        </aside>
 
-        <section className={styles.formPanel}>
-          <div className={styles.formContent}>
-            <span className={styles.eyebrow}>WAYPET HOME</span>
+          <RegisterForm />
 
-            <h1>Crear cuenta</h1>
-
-            <p className={styles.subtitle}>
-              Completa tus datos para formar parte de nuestra comunidad.
-            </p>
-
-            <RegisterForm />
-
-            <p className={styles.loginText}>
-              ¿Ya tienes una cuenta?{" "}
-              <Link href="/login">Inicia sesión</Link>
-            </p>
-          </div>
-        </section>
+          <p className={styles.loginText}>
+            Ya tienes cuenta <Link href="/login">Iniciar Sesión</Link>
+          </p>
+        </div>
       </section>
     </main>
   );
