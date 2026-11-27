@@ -1,8 +1,11 @@
 node_modules/
 dist/
 coverage/
-.env
+.next/
 *.log
 .DS_Store
-.next/
 backend/uploads/
+
+.env
+.env.*
+!.env.example
